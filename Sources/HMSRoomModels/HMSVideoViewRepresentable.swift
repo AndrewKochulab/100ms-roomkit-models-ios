@@ -173,6 +173,8 @@ internal struct HMSVideoViewRepresentable: UIViewRepresentable {
         } else {
             onDisappear(videoView, context: context)
         }
+        
+        videoView.mirror = mirroringEnabled
     }
     
     static func dismantleUIView(_ uiView: HMSVideoView, coordinator: ()) {

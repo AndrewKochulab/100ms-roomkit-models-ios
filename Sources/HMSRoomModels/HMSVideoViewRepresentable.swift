@@ -133,7 +133,7 @@ public struct HMSTrackView: View {
 internal struct HMSVideoViewRepresentable: UIViewRepresentable {
     
     internal class ViewState: ObservableObject {
-        @Published var isOnScreen: Bool = false
+        @Published var isOnScreen: Bool = true
     }
     
     var track: HMSVideoTrack

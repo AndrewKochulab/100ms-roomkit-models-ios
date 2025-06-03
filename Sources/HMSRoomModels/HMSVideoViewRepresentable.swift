@@ -10,7 +10,7 @@ import HMSSDK
 
 public struct HMSVideoTrackView: View {
     
-    @ObservedObject var peer: HMSPeerModel
+    @StateObject var peer: HMSPeerModel
     var contentMode: UIView.ContentMode
     let mirroringEnabled: Bool
     let unsubscribeWhenOffscreen: Bool
@@ -21,7 +21,7 @@ public struct HMSVideoTrackView: View {
         mirroringEnabled: Bool,
         unsubscribeWhenOffscreen: Bool = false
     ) {
-        self.peer = peer
+        _peer = .init(wrappedValue: peer)
         self.contentMode = contentMode
         self.mirroringEnabled = mirroringEnabled
         self.unsubscribeWhenOffscreen = unsubscribeWhenOffscreen
@@ -42,7 +42,7 @@ public struct HMSVideoTrackView: View {
 
 public struct HMSScreenTrackView: View {
     
-    @ObservedObject var peer: HMSPeerModel
+    @StateObject var peer: HMSPeerModel
     var contentMode: UIView.ContentMode
     var isZoomAndPanEnabled: Bool
     let mirroringEnabled: Bool
@@ -55,7 +55,7 @@ public struct HMSScreenTrackView: View {
         mirroringEnabled: Bool,
         unsubscribeWhenOffscreen: Bool = false
     ) {
-        self.peer = peer
+        _peer = .init(wrappedValue: peer)
         self.contentMode = contentMode
         self.isZoomAndPanEnabled = isZoomAndPanEnabled
         self.mirroringEnabled = mirroringEnabled
@@ -77,7 +77,7 @@ public struct HMSScreenTrackView: View {
 
 public struct HMSTrackView: View {
     
-    @ObservedObject var track: HMSTrackModel
+    @StateObject var track: HMSTrackModel
     var contentMode: UIView.ContentMode
     var isZoomAndPanEnabled: Bool
     let mirroringEnabled: Bool
@@ -92,7 +92,7 @@ public struct HMSTrackView: View {
         mirroringEnabled: Bool,
         unsubscribeWhenOffscreen: Bool = false
     ) {
-        self.track = track
+        _track = .init(wrappedValue: track)
         self.contentMode = contentMode
         self.isZoomAndPanEnabled = isZoomAndPanEnabled
         self.mirroringEnabled = mirroringEnabled
@@ -130,13 +130,15 @@ public struct HMSTrackView: View {
     }
 }
 
+extension HMSVideoTrack: @retroactive ObservableObject { }
+
 internal struct HMSVideoViewRepresentable: UIViewRepresentable {
     
     internal class ViewState: ObservableObject {
         @Published var isOnScreen: Bool = true
     }
     
-    var track: HMSVideoTrack
+    @StateObject var track: HMSVideoTrack
     var contentMode: UIView.ContentMode
     var isZoomAndPanEnabled: Bool
     var mirroringEnabled: Bool
@@ -150,7 +152,7 @@ internal struct HMSVideoViewRepresentable: UIViewRepresentable {
         mirroringEnabled: Bool,
         viewState: ViewState
     ) {
-        self.track = track
+        _track = .init(wrappedValue: track)
         self.contentMode = contentMode
         self.isZoomAndPanEnabled = isZoomAndPanEnabled
         self.mirroringEnabled = mirroringEnabled
